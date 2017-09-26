@@ -36,6 +36,78 @@ class GroceryListLinked implements IGroceryList {
   }
   
   
+  //item, int -> boolean
+  //adds an item at a given index
+  /*Fields:
+   * this.head -- GroceryNode
+   * this.size -- int
+   * 
+   * Methods:
+   * add()
+   * remove()
+   * markAsBought()
+   * display()
+   * 
+   * Fields of GroceryNode:
+   * data -- GroceryItem
+   * next -- GroceryNode
+   * 
+   * Methods of GroceryItem:
+   * addQuantity(int)
+   * buy()
+   * toString()
+   * equals(Object)
+   */
+  public boolean addAtIndex(GroceryItem item, int index) {
+    //quantity?
+    if(index == 0 || this.size == 0){
+      add(item);
+      return true;
+    }
+    
+    if(index > this.size + 1) {
+      throw new IndexOutOfBoundsException("The index is out of bounds.");
+      //return false;
+    }
+    
+    if(index == this.size){
+      GroceryNode current = this.head;
+      while(current.next != null){
+        current = current.next;
+      }
+      
+      current.next = new GroceryNode(item, null);
+      
+      size++;
+      return true;
+    }
+    
+    GroceryNode previous = this.head;
+    GroceryNode current = this.head.next;
+    
+    int cursor = 1;
+    
+    while(current != null){
+      if(cursor == index){
+        
+        current = new GroceryNode(item, current);
+        previous.next = current;
+        
+        this.size++;
+        return true;
+      }
+      
+      previous = previous.next;
+      current = current.next;
+      
+      cursor++;
+    }
+    
+    
+    return false;
+  }
+  
+  
   //String -> boolean
   //Removes the first instance of the object item
   //from the calling list, if present.
@@ -66,10 +138,19 @@ class GroceryListLinked implements IGroceryList {
     }
     
     GroceryItem item = new GroceryItem(name, 0);
+
     //traverse to find item
     //reference of previous node
-    GroceryNode current = this.head;
-    GroceryNode previous = current;
+    GroceryNode previous = this.head;
+    GroceryNode current = this.head.next;
+    
+    if(item.equals(previous.data)){
+      this.head = current;
+      previous = null;
+      
+      this.size--;
+      return true;
+    }
     
     //while(current.next != null){
     while(current != null){
@@ -82,7 +163,7 @@ class GroceryListLinked implements IGroceryList {
         return true;
       }
       
-      previous = current;
+      previous = previous.next;
       current = current.next;
       
     }
@@ -127,7 +208,7 @@ class GroceryListLinked implements IGroceryList {
     
     GroceryNode current = this.head;
     
-    while(current.next != null){
+    while(current != null){
       if (item.equals(current.data)){
         current.data.buy();
         return true;

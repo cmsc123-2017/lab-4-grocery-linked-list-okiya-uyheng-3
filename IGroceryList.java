@@ -5,9 +5,11 @@ interface IGroceryList {
   
   boolean markAsBought(String name);
   
-  int totalQuantity();
+  public boolean addAtIndex(GroceryItem item, int index);
+    
+  //int totalQuantity();
   
-  boolean reduceQuantity(String itemName, int quantity);
+  //boolean reduceQuantity(String itemName, int quantity);
   
   void display();
 }
